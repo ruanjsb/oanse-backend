@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cargo {
+  id_cargo  Int         @id
+  nome      String?     @db.VarChar(45)
+  descricao String?     @db.VarChar(45)
+  lideranca lideranca[]
+}
+
+model clube {
+  id_clube      Int         @id
+  nome          String      @db.VarChar(45)
+  idade_entrada Int?
+  idade_saida   Int?
+  lideranca     lideranca[]
+  manual        manual[]
+  oansista      oansista[]
+}
+
+model divisao {
+  id_divisao     Int          @id
+  nome           String?      @db.VarChar(45)
+  ordem          Int?
+  id_manual      Int
+  id_divisao_pai Int
+  sequencial     Int?         @db.TinyInt
+  divisao        divisao      @relation("divisaoTodivisao_id_divisao_pai", fields: [id_divisao_pai], references: [id_divisao], onDelete: NoAction, onUpdate: NoAction, map: "fk_divisao_divisao1")
+  manual         manual       @relation(fields: [id_manual], references: [id_manual], onDelete: NoAction, onUpdate: NoAction, map: "fk_divisao_manual1")
+  other_divisao  divisao[]    @relation("divisaoTodivisao_id_divisao_pai")
+  premio         premio[]
+  progressao     progressao[]
+
+  @@index([id_divisao_pai], map: "fk_divisao_divisao1_idx")
+  @@index([id_manual], map: "fk_divisao_manual1_idx")
+}
+
+model item_pontuacao {
+  id_item_pontuacao Int         @id
+  nome              String?     @db.VarChar(45)
+  descricao         String?     @db.VarChar(45)
+  pontos            Int?
+  pontuacao         pontuacao[]
+}
+
+model lideranca {
+  id_lideranca Int          @id
+  nome         String?      @db.VarChar(45)
+  nome_usuario String?      @db.VarChar(45)
+  senha        String?      @db.VarChar(32)
+  id_clube     Int
+  id_cargo     Int
+  cargo        cargo        @relation(fields: [id_cargo], references: [id_cargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_cargo1")
+  clube        clube        @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_clube1")
+  pontuacao    pontuacao[]
+  premiacao    premiacao[]
+  progressao   progressao[]
+
+  @@index([id_cargo], map: "fk_lideranca_cargo1_idx")
+  @@index([id_clube], map: "fk_lideranca_clube1_idx")
+}
+
+model manual {
+  id_manual Int       @id
+  nome      String?   @db.VarChar(45)
+  id_clube  Int
+  clube     clube     @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_manual_clube1")
+  divisao   divisao[]
+
+  @@index([id_clube], map: "fk_manual_clube1_idx")
+}
+
+model oansista {
+  id_oansista              Int                        @id
+  nome                     String                     @db.VarChar(45)
+  data_nascimento          DateTime                   @db.Timestamp(0)
+  sexo                     String                     @db.VarChar(1)
+  id_clube_atual           Int
+  clube                    clube                      @relation(fields: [id_clube_atual], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_oansista_clube1")
+  pontuacao                pontuacao[]
+  premiacao                premiacao[]
+  progressao               progressao[]
+  responsavel_has_oansista responsavel_has_oansista[]
+
+  @@index([id_clube_atual], map: "fk_oansista_clube1_idx")
+}
+
+model pontuacao {
+  id_pontuacao      Int            @id
+  quantidade        Int?
+  id_reuniao        Int
+  id_item_pontuacao Int
+  id_lideranca      Int
+  id_oansista       Int
+  item_pontuacao    item_pontuacao @relation(fields: [id_item_pontuacao], references: [id_item_pontuacao], onDelete: NoAction, onUpdate: NoAction, map: "fk_pontuacao_item_pontuacao1")
+  lideranca         lideranca      @relation(fields: [id_lideranca], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_pontuacao_lideranca1")
+  oansista          oansista       @relation(fields: [id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_pontuacao_oansista1")
+  reuniao           reuniao        @relation(fields: [id_reuniao], references: [id_reuniao], onDelete: NoAction, onUpdate: NoAction, map: "fk_pontuacao_reuniao1")
+
+  @@index([id_item_pontuacao], map: "fk_pontuacao_item_pontuacao1_idx")
+  @@index([id_lideranca], map: "fk_pontuacao_lideranca1_idx")
+  @@index([id_oansista], map: "fk_pontuacao_oansista1_idx")
+  @@index([id_reuniao], map: "fk_pontuacao_reuniao1_idx")
+}
+
+model premiacao {
+  id_premiacao         Int       @id
+  data_conquista       DateTime? @db.DateTime(0)
+  data_entrega         DateTime? @db.DateTime(0)
+  id_premio            Int
+  id_lideranca         Int
+  oansista_id_oansista Int
+  lideranca            lideranca @relation(fields: [id_lideranca], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_lideranca1")
+  premio               premio    @relation(fields: [id_premio], references: [id_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_premio1")
+  oansista             oansista  @relation(fields: [oansista_id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_oansista1")
+
+  @@index([id_lideranca], map: "fk_premiacao_lideranca1_idx")
+  @@index([oansista_id_oansista], map: "fk_premiacao_oansista1_idx")
+  @@index([id_premio], map: "fk_premiacao_premio1_idx")
+}
+
+model premio {
+  id_premio      Int         @id
+  nome           String?     @db.VarChar(45)
+  descricao      String?     @db.VarChar(45)
+  id_tipo_premio Int
+  id_divisao     Int?
+  divisao        divisao?    @relation(fields: [id_divisao], references: [id_divisao], onDelete: NoAction, onUpdate: NoAction, map: "fk_premio_divisao1")
+  tipo_premio    tipo_premio @relation(fields: [id_tipo_premio], references: [id_tipo_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_premio_tipo_premio1")
+  premiacao      premiacao[]
+
+  @@index([id_divisao], map: "fk_premio_divisao1_idx")
+  @@index([id_tipo_premio], map: "fk_premio_tipo_premio1_idx")
+}
+
+model progressao {
+  id_progressao Int       @id
+  id_oansista   Int
+  id_divisao    Int
+  id_lideranca  Int
+  id_reuniao    Int
+  divisao       divisao   @relation(fields: [id_divisao], references: [id_divisao], onDelete: NoAction, onUpdate: NoAction, map: "fk_progressao_divisao1")
+  lideranca     lideranca @relation(fields: [id_lideranca], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_progressao_lideranca1")
+  oansista      oansista  @relation(fields: [id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_progressao_oansista1")
+  reuniao       reuniao   @relation(fields: [id_reuniao], references: [id_reuniao], onDelete: NoAction, onUpdate: NoAction, map: "fk_progressao_reuniao1")
+
+  @@index([id_divisao], map: "fk_progressao_divisao1_idx")
+  @@index([id_lideranca], map: "fk_progressao_lideranca1_idx")
+  @@index([id_oansista], map: "fk_progressao_oansista1_idx")
+  @@index([id_reuniao], map: "fk_progressao_reuniao1_idx")
+}
+
+model responsavel {
+  id_responsavel           Int                        @id
+  nome                     String?                    @db.VarChar(45)
+  email                    String?                    @db.VarChar(45)
+  telefone                 String?                    @db.VarChar(45)
+  responsavel_has_oansista responsavel_has_oansista[]
+}
+
+model responsavel_has_oansista {
+  responsavel_id_responsavel Int
+  oansista_id_oansista       Int
+  oansista                   oansista    @relation(fields: [oansista_id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_responsavel_has_oansista_oansista1")
+  responsavel                responsavel @relation(fields: [responsavel_id_responsavel], references: [id_responsavel], onDelete: NoAction, onUpdate: NoAction, map: "fk_responsavel_has_oansista_responsavel")
+
+  @@id([responsavel_id_responsavel, oansista_id_oansista])
+  @@index([oansista_id_oansista], map: "fk_responsavel_has_oansista_oansista1_idx")
+  @@index([responsavel_id_responsavel], map: "fk_responsavel_has_oansista_responsavel_idx")
+}
+
+model reuniao {
+  id_reuniao Int          @id
+  data       DateTime?    @db.DateTime(0)
+  pontuacao  pontuacao[]
+  progressao progressao[]
+}
+
+model tipo_premio {
+  id_tipo_premio Int      @id
+  nome           String?  @db.VarChar(45)
+  premio         premio[]
+}
