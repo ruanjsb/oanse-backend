@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CargoController from "./controllers/CargoController";
+import CargoController from "../controllers/CargoController";
 
 const routes = Router();
 
