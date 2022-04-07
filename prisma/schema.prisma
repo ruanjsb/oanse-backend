@@ -8,24 +8,25 @@ datasource db {
 }
 
 model cargo {
-  id_cargo  Int         @id
+  id_cargo  Int         @id @default(autoincrement())
   nome      String?     @db.VarChar(45)
   descricao String?     @db.VarChar(45)
   lideranca lideranca[]
 }
 
 model clube {
-  id_clube      Int         @id
+  id_clube      Int         @id @default(autoincrement())
   nome          String      @db.VarChar(45)
   idade_entrada Int?
   idade_saida   Int?
   lideranca     lideranca[]
   manual        manual[]
+  material      material[]
   oansista      oansista[]
 }
 
 model divisao {
-  id_divisao     Int          @id
+  id_divisao     Int          @id @default(autoincrement())
   nome           String?      @db.VarChar(45)
   ordem          Int?
   id_manual      Int
@@ -42,33 +43,35 @@ model divisao {
 }
 
 model item_pontuacao {
-  id_item_pontuacao Int         @id
-  nome              String?     @db.VarChar(45)
+  id_item_pontuacao Int         @id @default(autoincrement())
+  nome              String      @db.VarChar(45)
   descricao         String?     @db.VarChar(45)
-  pontos            Int?
+  pontos            Int
   pontuacao         pontuacao[]
 }
 
 model lideranca {
-  id_lideranca Int          @id
-  nome         String?      @db.VarChar(45)
-  nome_usuario String?      @db.VarChar(45)
-  senha        String?      @db.VarChar(32)
-  id_clube     Int
-  id_cargo     Int
-  cargo        cargo        @relation(fields: [id_cargo], references: [id_cargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_cargo1")
-  clube        clube        @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_clube1")
-  pontuacao    pontuacao[]
-  premiacao    premiacao[]
-  progressao   progressao[]
+  id_lideranca                                                                    Int                     @id @default(autoincrement())
+  nome                                                                            String                  @db.VarChar(45)
+  nome_usuario                                                                    String                  @db.VarChar(45)
+  senha                                                                           String                  @db.VarChar(32)
+  id_clube                                                                        Int
+  id_cargo                                                                        Int
+  cargo                                                                           cargo                   @relation(fields: [id_cargo], references: [id_cargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_cargo1")
+  clube                                                                           clube                   @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_clube1")
+  movimentacao_material_liderancaTomovimentacao_material_id_lideranca_responsavel movimentacao_material[] @relation("liderancaTomovimentacao_material_id_lideranca_responsavel")
+  movimentacao_material_liderancaTomovimentacao_material_id_lideranca_solicitante movimentacao_material[] @relation("liderancaTomovimentacao_material_id_lideranca_solicitante")
+  pontuacao                                                                       pontuacao[]
+  premiacao                                                                       premiacao[]
+  progressao                                                                      progressao[]
 
   @@index([id_cargo], map: "fk_lideranca_cargo1_idx")
   @@index([id_clube], map: "fk_lideranca_clube1_idx")
 }
 
 model manual {
-  id_manual Int       @id
-  nome      String?   @db.VarChar(45)
+  id_manual Int       @id @default(autoincrement())
+  nome      String    @db.VarChar(45)
   id_clube  Int
   clube     clube     @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_manual_clube1")
   divisao   divisao[]
@@ -77,12 +80,13 @@ model manual {
 }
 
 model oansista {
-  id_oansista              Int                        @id
+  id_oansista              Int                        @id @default(autoincrement())
   nome                     String                     @db.VarChar(45)
   data_nascimento          DateTime                   @db.Timestamp(0)
   sexo                     String                     @db.VarChar(1)
   id_clube_atual           Int
   clube                    clube                      @relation(fields: [id_clube_atual], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_oansista_clube1")
+  movimentacao_material    movimentacao_material[]
   pontuacao                pontuacao[]
   premiacao                premiacao[]
   progressao               progressao[]
@@ -92,8 +96,8 @@ model oansista {
 }
 
 model pontuacao {
-  id_pontuacao      Int            @id
-  quantidade        Int?
+  id_pontuacao      Int            @id @default(autoincrement())
+  quantidade        Int
   id_reuniao        Int
   id_item_pontuacao Int
   id_lideranca      Int
@@ -110,29 +114,31 @@ model pontuacao {
 }
 
 model premiacao {
-  id_premiacao         Int       @id
-  data_conquista       DateTime? @db.DateTime(0)
-  data_entrega         DateTime? @db.DateTime(0)
-  id_premio            Int
-  id_lideranca         Int
-  oansista_id_oansista Int
-  lideranca            lideranca @relation(fields: [id_lideranca], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_lideranca1")
-  premio               premio    @relation(fields: [id_premio], references: [id_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_premio1")
-  oansista             oansista  @relation(fields: [oansista_id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_oansista1")
+  id_premiacao   Int       @default(autoincrement())
+  data_conquista DateTime  @db.DateTime(0)
+  data_entrega   DateTime? @db.DateTime(0)
+  id_premio      Int
+  id_lideranca   Int
+  id_oansista    Int
+  lideranca      lideranca @relation(fields: [id_lideranca], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_lideranca1")
+  oansista       oansista  @relation(fields: [id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_oansista1")
+  premio         premio    @relation(fields: [id_premio], references: [id_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_premiacao_premio1")
 
+  @@id([id_premiacao, data_conquista])
   @@index([id_lideranca], map: "fk_premiacao_lideranca1_idx")
-  @@index([oansista_id_oansista], map: "fk_premiacao_oansista1_idx")
+  @@index([id_oansista], map: "fk_premiacao_oansista1_idx")
   @@index([id_premio], map: "fk_premiacao_premio1_idx")
 }
 
 model premio {
-  id_premio      Int         @id
-  nome           String?     @db.VarChar(45)
+  id_premio      Int         @id @default(autoincrement())
+  nome           String      @db.VarChar(45)
   descricao      String?     @db.VarChar(45)
   id_tipo_premio Int
   id_divisao     Int?
   divisao        divisao?    @relation(fields: [id_divisao], references: [id_divisao], onDelete: NoAction, onUpdate: NoAction, map: "fk_premio_divisao1")
   tipo_premio    tipo_premio @relation(fields: [id_tipo_premio], references: [id_tipo_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_premio_tipo_premio1")
+  material       material[]
   premiacao      premiacao[]
 
   @@index([id_divisao], map: "fk_premio_divisao1_idx")
@@ -140,7 +146,7 @@ model premio {
 }
 
 model progressao {
-  id_progressao Int       @id
+  id_progressao Int       @id @default(autoincrement())
   id_oansista   Int
   id_divisao    Int
   id_lideranca  Int
@@ -157,10 +163,10 @@ model progressao {
 }
 
 model responsavel {
-  id_responsavel           Int                        @id
-  nome                     String?                    @db.VarChar(45)
+  id_responsavel           Int                        @id @default(autoincrement())
+  nome                     String                     @db.VarChar(45)
   email                    String?                    @db.VarChar(45)
-  telefone                 String?                    @db.VarChar(45)
+  telefone                 String                     @db.VarChar(45)
   responsavel_has_oansista responsavel_has_oansista[]
 }
 
@@ -176,14 +182,58 @@ model responsavel_has_oansista {
 }
 
 model reuniao {
-  id_reuniao Int          @id
-  data       DateTime?    @db.DateTime(0)
+  id_reuniao Int          @id @default(autoincrement())
+  data       DateTime     @db.DateTime(0)
   pontuacao  pontuacao[]
   progressao progressao[]
 }
 
 model tipo_premio {
-  id_tipo_premio Int      @id
-  nome           String?  @db.VarChar(45)
+  id_tipo_premio Int      @id @default(autoincrement())
+  nome           String   @db.VarChar(45)
   premio         premio[]
+}
+
+model material {
+  id_material                    Int                     @id @default(autoincrement())
+  nome                           String                  @db.VarChar(45)
+  descricao                      String?                 @db.VarChar(45)
+  tipo_material_id_tipo_material Int
+  clube_id_clube                 Int?
+  estoque                        Int?
+  id_premio                      Int?
+  clube                          clube?                  @relation(fields: [clube_id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_clube1")
+  premio                         premio?                 @relation(fields: [id_premio], references: [id_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_premio1")
+  tipo_material                  tipo_material           @relation(fields: [tipo_material_id_tipo_material], references: [id_tipo_material], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_tipo_material1")
+  movimentacao_material          movimentacao_material[]
+
+  @@index([clube_id_clube], map: "fk_material_clube1_idx")
+  @@index([id_premio], map: "fk_material_premio1_idx")
+  @@index([tipo_material_id_tipo_material], map: "fk_material_tipo_material1_idx")
+}
+
+model movimentacao_material {
+  id_movimentacao_material                                            Int        @id @default(autoincrement())
+  data                                                                DateTime   @db.DateTime(0)
+  material_id_material                                                Int
+  id_lideranca_responsavel                                            Int
+  id_lideranca_solicitante                                            Int?
+  tipo                                                                Int
+  id_oansista                                                         Int?
+  quantidade                                                          Int
+  lideranca_liderancaTomovimentacao_material_id_lideranca_responsavel lideranca  @relation("liderancaTomovimentacao_material_id_lideranca_responsavel", fields: [id_lideranca_responsavel], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_movimentacao_material_lideranca1")
+  lideranca_liderancaTomovimentacao_material_id_lideranca_solicitante lideranca? @relation("liderancaTomovimentacao_material_id_lideranca_solicitante", fields: [id_lideranca_solicitante], references: [id_lideranca], onDelete: NoAction, onUpdate: NoAction, map: "fk_movimentacao_material_lideranca2")
+  oansista                                                            oansista?  @relation(fields: [id_oansista], references: [id_oansista], onDelete: NoAction, onUpdate: NoAction, map: "fk_movimentacao_material_oansista1")
+  material                                                            material   @relation(fields: [material_id_material], references: [id_material], onDelete: NoAction, onUpdate: NoAction, map: "fk_movimentacao_material_material1")
+
+  @@index([id_lideranca_responsavel], map: "fk_movimentacao_material_lideranca1_idx")
+  @@index([id_lideranca_solicitante], map: "fk_movimentacao_material_lideranca2_idx")
+  @@index([material_id_material], map: "fk_movimentacao_material_material1_idx")
+  @@index([id_oansista], map: "fk_movimentacao_material_oansista1_idx")
+}
+
+model tipo_material {
+  id_tipo_material Int        @id @default(autoincrement())
+  nome             String     @db.VarChar(45)
+  material         material[]
 }
