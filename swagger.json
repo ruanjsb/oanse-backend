@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API do Oanse",
+    "description": "Documentação gerada automaticamente pelo módulo <b>swagger-autogen</b>."
   },
   "host": "localhost:3020",
   "basePath": "/",
@@ -13,16 +13,25 @@
   "paths": {
     "/api/cargo/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Cargo"
+        ],
+        "description": "Obter os cargos cadastrados.",
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Cargo"
+        ],
+        "description": "Cadastrar um cargo novo.",
         "parameters": [
           {
             "name": "body",
@@ -41,8 +50,57 @@
           }
         ],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/cargo/{id}": {
+      "get": {
+        "tags": [
+          "Cargo"
+        ],
+        "description": "Obter um cargo específico pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cargo"
+        ],
+        "description": "Deletar um cargo específico pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
