@@ -3,8 +3,8 @@ import CargoController from "../controllers/CargoController";
 
 const router = Router();
 
-router.get('/cargo', CargoController.list);
+router.get('/', CargoController.list);
 
-router.post('/cargo', CargoController.create);
+router.post('/', CargoController.create);
 
 export default router;
