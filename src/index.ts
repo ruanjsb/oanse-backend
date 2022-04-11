@@ -1,13 +1,16 @@
-import express from 'express'
-import routes from './routes';
+import App from './app';
 
-const app = express();
+function startApp(): boolean {
+  try {
+    const port = Number(process.env.APP_PORT) || 3020;
+    App.init();
+    App.startDependencies();
+    App.startServer(port);
+    return true;
+  } catch (error) {
+    console.error(`Unable to start app: ${error}`);
+    return false;
+  }
+}
 
-app.use(express.json())
-app.use(routes);
-
-
-const server = app.listen(3000, () =>
-  console.log(`
-🚀 Server ready at: http://localhost:3000`)
-);
+startApp();
