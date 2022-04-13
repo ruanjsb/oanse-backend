@@ -30,7 +30,22 @@ export default {
         // #swagger.tags = ['Material']
         // #swagger.description = 'Cadastrar um material novo.'
         const { nome, descricao, id_tipo_material, clube_id_clube, estoque, id_premio } = req.body;
-        //console.log(req.body)
+
+        let clube = undefined;
+        let premio = undefined;
+
+        if (clube_id_clube) {
+             clube = {
+                connect: { id_clube: Number(clube_id_clube)}
+            }
+        }
+
+        if (id_premio) {
+            premio = { 
+                connect: { id_premio: Number(id_premio)}
+            }
+        }
+
         return await prisma.material.create({
             data: {
 
@@ -39,13 +54,9 @@ export default {
                 tipo_material: {
                     connect: { id_tipo_material: Number(id_tipo_material) }
                 },
-                clube : {
-                    connect: { id_clube: Number(clube_id_clube)}
-                },
+                clube,
                 estoque,
-                premio: { 
-                    connect: { id_premio: Number(id_premio)}
-                },
+                premio
             },
         })
             .then((material) => res.status(201).send(material))
