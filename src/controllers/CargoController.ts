@@ -29,7 +29,7 @@ export default {
   async create(req: Request, res: Response) {
     // #swagger.tags = ['Cargo']
     // #swagger.description = 'Cadastrar um cargo novo.'
-    const { nome, descricao } = req.body
+    const { nome, descricao } = req.body;
     return await prisma.cargo.create({
       data: {
         nome,
@@ -50,7 +50,7 @@ export default {
         id_cargo: Number(id),
       },
     })
-      .then((_) => res.status(200).send({result: true}))
+      .then((_) => res.status(200).send({ result: true }))
       .catch((error) => res.status(500).json({ error: error }));
   },
 

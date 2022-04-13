@@ -104,6 +104,112 @@
           }
         }
       }
+    },
+    "/api/material/": {
+      "get": {
+        "tags": [
+          "Material"
+        ],
+        "description": "Obter os materiais cadastrados.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Material"
+        ],
+        "description": "Cadastrar um material novo.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "descricao": {
+                  "example": "any"
+                },
+                "id_tipo_material": {
+                  "example": "any"
+                },
+                "clube_id_clube": {
+                  "example": "any"
+                },
+                "estoque": {
+                  "example": "any"
+                },
+                "id_premio": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/material/{id}": {
+      "get": {
+        "tags": [
+          "Material"
+        ],
+        "description": "Obter um material específico pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Material"
+        ],
+        "description": "Deletar um material específico pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }

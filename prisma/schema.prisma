@@ -198,18 +198,18 @@ model material {
   id_material                    Int                     @id @default(autoincrement())
   nome                           String                  @db.VarChar(45)
   descricao                      String?                 @db.VarChar(45)
-  tipo_material_id_tipo_material Int
+  id_tipo_material Int
   clube_id_clube                 Int?
   estoque                        Int?
   id_premio                      Int?
   clube                          clube?                  @relation(fields: [clube_id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_clube1")
   premio                         premio?                 @relation(fields: [id_premio], references: [id_premio], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_premio1")
-  tipo_material                  tipo_material           @relation(fields: [tipo_material_id_tipo_material], references: [id_tipo_material], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_tipo_material1")
+  tipo_material                  tipo_material           @relation(fields: [id_tipo_material], references: [id_tipo_material], onDelete: NoAction, onUpdate: NoAction, map: "fk_material_tipo_material1")
   movimentacao_material          movimentacao_material[]
 
   @@index([clube_id_clube], map: "fk_material_clube1_idx")
   @@index([id_premio], map: "fk_material_premio1_idx")
-  @@index([tipo_material_id_tipo_material], map: "fk_material_tipo_material1_idx")
+  @@index([id_tipo_material], map: "fk_tipo_material1_idx")
 }
 
 model movimentacao_material {
