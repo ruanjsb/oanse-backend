@@ -26,6 +26,25 @@ export default {
       .catch((error) => res.status(500).json({ error: error }));
   },
 
+  async update(req: Request, res: Response) {
+    // #swagger.tags = ['Cargo']
+    // #swagger.description = 'Editar um cargo específico pelo id.'
+    const { id } = req.params;
+    const {nome, descricao} = req.body;
+
+    return await prisma.cargo.update({
+      where: {
+        id_cargo: Number(id),
+      },
+      data: {
+        nome: nome || undefined,
+        descricao: descricao || undefined
+      }
+    })
+      .then((cargo) => res.status(200).send(cargo))
+      .catch((error) => res.status(500).json({ error: error }));
+  },
+
   async create(req: Request, res: Response) {
     // #swagger.tags = ['Cargo']
     // #swagger.description = 'Cadastrar um cargo novo.'
