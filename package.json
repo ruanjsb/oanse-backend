@@ -7,6 +7,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --exit-child src/index.ts",
+    "dev-debug": "ts-node-dev --respawn --transpile-only --inspect=4321 --exit-child src/index.ts",
     "swagger-autogen": "node swagger.js"
   },
   "keywords": [],

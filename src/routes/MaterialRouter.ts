@@ -7,6 +7,8 @@ router.get('/', MaterialController.list);
 
 router.get('/:id', MaterialController.listOne);
 
+router.put('/:id', MaterialController.update);
+
 router.post('/', MaterialController.create);
 
 router.delete('/:id', MaterialController.delete);

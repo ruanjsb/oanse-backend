@@ -225,6 +225,55 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Material"
+        ],
+        "description": "Atualizar um material específico pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "descricao": {
+                  "example": "any"
+                },
+                "id_tipo_material": {
+                  "example": "any"
+                },
+                "clube_id_clube": {
+                  "example": "any"
+                },
+                "estoque": {
+                  "example": "any"
+                },
+                "id_premio": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Material"
