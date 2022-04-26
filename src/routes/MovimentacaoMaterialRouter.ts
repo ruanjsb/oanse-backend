@@ -8,10 +8,10 @@ router.get('/', MovimentacaoMaterialController.list);
 
 router.get('/:id', MovimentacaoMaterialController.listOne);
 
-// router.put('/:id', MaterialController.update);
+router.put('/:id', MovimentacaoMaterialController.update);
 
 router.post('/', MovimentacaoMaterialController.create);
 
-// router.delete('/:id', MaterialController.delete);
+router.delete('/:id', MovimentacaoMaterialController.delete);
 
 export default router;

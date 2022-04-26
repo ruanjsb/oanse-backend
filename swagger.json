@@ -382,6 +382,80 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Movimentação de Material"
+        ],
+        "description": "Atualizar uma movimentação de material.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "example": "any"
+                },
+                "material_id_material": {
+                  "example": "any"
+                },
+                "id_lideranca_responsavel": {
+                  "example": "any"
+                },
+                "id_lideranca_solicitante": {
+                  "example": "any"
+                },
+                "tipo": {
+                  "example": "any"
+                },
+                "id_oansista": {
+                  "example": "any"
+                },
+                "quantidade": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Movimentação de Material"
+        ],
+        "description": "Deletar uma movimentação de material específica pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   }

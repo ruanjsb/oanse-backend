@@ -67,4 +67,75 @@ export default {
             .catch((error) => res.status(500).json({ error: error }));
     },
 
+    async update(req: Request, res: Response) {
+        // #swagger.tags = ['Movimentação de Material']
+        // #swagger.description = 'Atualizar uma movimentação de material.'
+        const { id } = req.params;
+        const { data, material_id_material, id_lideranca_responsavel, id_lideranca_solicitante, tipo, id_oansista, quantidade } = req.body;
+
+        let lideranca_liderancaTomovimentacao_material_id_lideranca_solicitante;
+        let lideranca_liderancaTomovimentacao_material_id_lideranca_responsavel;
+        let oansista;
+        let material;
+
+        if(material_id_material) {
+            material = {
+                connect: { id_material: Number(material_id_material) }
+            }
+        }
+
+        if (id_lideranca_responsavel) {
+            lideranca_liderancaTomovimentacao_material_id_lideranca_solicitante = {
+                
+                connect: {id_lideranca: Number(id_lideranca_responsavel)}
+            }
+        }
+
+        if (id_lideranca_solicitante) {
+            lideranca_liderancaTomovimentacao_material_id_lideranca_responsavel = {
+                
+                connect: {id_lideranca: Number(id_lideranca_solicitante)}
+            }
+        }
+
+        if (id_oansista) {
+            oansista = {
+                connect: { id_oansista: Number(id_oansista) }
+            }
+        }
+
+        return await prisma.movimentacao_material.update({
+            where: {
+                id_movimentacao_material: Number(id),
+            },
+            data: {
+
+                data,
+                material,
+                lideranca_liderancaTomovimentacao_material_id_lideranca_responsavel,
+                lideranca_liderancaTomovimentacao_material_id_lideranca_solicitante,
+                tipo,
+                oansista,
+                quantidade
+            },
+        })
+            .then((movimentacao_material) => res.status(201).send(movimentacao_material))
+            .catch((error) => res.status(500).json({ error: error }));
+    },
+
+    async delete(req: Request, res: Response) {
+        // #swagger.tags = ['Movimentação de Material']
+        // #swagger.description = 'Deletar uma movimentação de material específica pelo id.'
+        const { id } = req.params;
+
+        return await prisma.movimentacao_material.delete({
+            where: {
+                id_movimentacao_material: Number(id),
+            },
+        })
+            .then((movimentacao_material) => res.status(200).send(movimentacao_material))
+            .catch((error) => res.status(500).json({ error: error }));
+    },
+
+
 }
