@@ -1,7 +1,6 @@
 import { Router } from "express";
 import MovimentacaoMaterialController from "../controllers/MovimentacaoMaterialController";
 
-
 const router = Router();
 
 router.get('/', MovimentacaoMaterialController.list);
