@@ -59,7 +59,7 @@ export default {
     },
 
     async delete(req: Request, res: Response) {
-        // #swagger.tags = [''Tipo Material']
+        // #swagger.tags = ['Tipo Material']
         // #swagger.description = 'Deletar um tipo de material específico pelo id.'
         const { id } = req.params;
     

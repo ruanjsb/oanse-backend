@@ -400,7 +400,9 @@
         }
       },
       "delete": {
-        "tags": [],
+        "tags": [
+          "Tipo Material"
+        ],
         "description": "Deletar um tipo de material específico pelo id.",
         "parameters": [
           {
@@ -410,7 +412,14 @@
             "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/api/movimentacao/": {
