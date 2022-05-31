@@ -55,10 +55,10 @@ model lideranca {
   nome                                                                            String                  @db.VarChar(45)
   nome_usuario                                                                    String                  @db.VarChar(45)
   senha                                                                           String                  @db.VarChar(32)
-  id_clube                                                                        Int
+  id_clube                                                                        Int?
   id_cargo                                                                        Int
   cargo                                                                           cargo                   @relation(fields: [id_cargo], references: [id_cargo], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_cargo1")
-  clube                                                                           clube                   @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_clube1")
+  clube                                                                           clube?                  @relation(fields: [id_clube], references: [id_clube], onDelete: NoAction, onUpdate: NoAction, map: "fk_lideranca_clube1")
   movimentacao_material_liderancaTomovimentacao_material_id_lideranca_responsavel movimentacao_material[] @relation("liderancaTomovimentacao_material_id_lideranca_responsavel")
   movimentacao_material_liderancaTomovimentacao_material_id_lideranca_solicitante movimentacao_material[] @relation("liderancaTomovimentacao_material_id_lideranca_solicitante")
   pontuacao                                                                       pontuacao[]

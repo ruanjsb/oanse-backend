@@ -582,6 +582,87 @@
           }
         }
       }
+    },
+    "/api/lideranca/": {
+      "get": {
+        "tags": [
+          "Lideranca"
+        ],
+        "description": "Obter a liderança cadastrada.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Lideranca"
+        ],
+        "description": "Cadastrar uma liderança nova.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "nome_usuario": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                },
+                "id_clube": {
+                  "example": "any"
+                },
+                "id_cargo": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/lideranca/{id}": {
+      "get": {
+        "tags": [
+          "Lideranca"
+        ],
+        "description": "Obter uma liderança específica pelo id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }
